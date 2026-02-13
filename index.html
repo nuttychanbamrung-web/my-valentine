@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valentine Surprise! ❤️</title>
+    <title>Valentine for You! ❤️</title>
     <style>
         body {
             margin: 0;
@@ -12,31 +12,28 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #ffcad4;
-            font-family: 'Arial', sans-serif;
+            background-color: #bbdefb; /* Doraemon Blue */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
         }
 
         .container {
             background: white;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            width: 90%;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            width: 85%;
             max-width: 350px;
-            position: relative;
-            border: 4px solid #ff4d6d;
+            position: relative; /* This keeps the No button inside */
+            border: 5px solid #2196f3;
             text-align: center;
-            min-height: 400px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            min-height: 450px;
         }
 
         h1 {
-            color: #ff4d6d;
-            font-size: 1.4rem;
-            margin: 10px 0;
+            color: #1976d2;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
         }
 
         .gif-container {
@@ -45,21 +42,19 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #fff5f7;
-            border-radius: 10px;
+            margin-bottom: 20px;
         }
 
-        img {
+        #mainGif {
             max-width: 100%;
             max-height: 100%;
-            display: block;
+            border-radius: 15px;
         }
 
         .btn-group {
-            width: 100%;
-            height: 120px;
             position: relative;
-            margin-top: 20px;
+            height: 150px;
+            width: 100%;
         }
 
         button {
@@ -69,21 +64,22 @@
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
+            transition: 0.1s;
             position: absolute;
         }
 
         #yesBtn {
-            background-color: #ff4d6d;
+            background-color: #ff5252;
             color: white;
-            left: 20%;
+            left: 20px;
             top: 20px;
-            z-index: 10;
+            z-index: 100;
         }
 
         #noBtn {
             background-color: #adb5bd;
             color: white;
-            right: 20%;
+            right: 20px;
             top: 20px;
             transition: all 0.2s ease;
         }
@@ -96,19 +92,19 @@
         }
 
         @keyframes fall {
-            to { transform: translateY(110vh); }
+            to { transform: translateY(110vh) rotate(360deg); }
         }
     </style>
 </head>
 <body>
 
-    <div class="container" id="mainBox">
-        <h1 id="msg">Will you be my Valentine? ❤️</h1>
+    <div class="container" id="box">
+        <h1 id="header">Will you be my Valentine? 🔔❤️</h1>
         <div class="gif-container">
-            <img id="mainGif" src="https://media.giphy.com/media/12TqMlxXNAnHuo/giphy.gif" alt="Cute Gif">
+            <img id="mainGif" src="https://res.cloudinary.com/dxfq3iotg/image/upload/v1574514227/Doraemon_Character_xhp8ve.png" alt="Doraemon">
         </div>
         <div class="btn-group">
-            <button id="yesBtn">YES!</button>
+            <button id="yesBtn">Yes! ❤️</button>
             <button id="noBtn">No</button>
         </div>
     </div>
@@ -116,23 +112,27 @@
     <script>
         const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
+        const header = document.getElementById('header');
         const gif = document.getElementById('mainGif');
-        const box = document.getElementById('mainBox');
+        const box = document.getElementById('box');
+        
         let scale = 1;
 
+        // Moves the button ONLY inside the white card
         function moveNo() {
-            // คำนวณขอบเขตภายใน Container สีขาวเท่านั้น
-            const maxX = box.clientWidth - noBtn.offsetWidth - 20;
-            const maxY = box.clientHeight - noBtn.offsetHeight - 20;
+            const padding = 20;
+            const maxX = box.clientWidth - noBtn.offsetWidth - padding;
+            const maxY = box.clientHeight - noBtn.offsetHeight - padding;
 
+            // Generate random X/Y but offset it away from the Header
             const newX = Math.floor(Math.random() * maxX);
-            const newY = Math.floor(Math.random() * (maxY - 100)) + 100;
+            const newY = Math.floor(Math.random() * (maxY - 150)) + 150; 
 
             noBtn.style.left = newX + 'px';
             noBtn.style.top = newY + 'px';
-            
-            // ขยายปุ่ม Yes ให้ใหญ่ขึ้น
-            scale += 0.3;
+
+            // Grow the Yes button
+            scale += 0.4;
             yesBtn.style.transform = `scale(${scale})`;
         }
 
@@ -140,13 +140,17 @@
         noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveNo(); });
 
         yesBtn.addEventListener('click', () => {
-            document.getElementById('msg').innerText = "I LOVE YOU! ❤️";
-            // รูปหมา Corgi ที่คุณต้องการ
+            header.innerHTML = "I LOVE YOU! ❤️";
+            // The Corgi GIF you wanted
             gif.src = "https://media.tenor.com/mO_WqAbeK9AAAAAM/fuck-dog.gif";
-            noBtn.style.display = 'none';
-            yesBtn.style.position = 'static';
-            yesBtn.style.transform = 'scale(1.2)';
             
+            noBtn.style.display = 'none';
+            yesBtn.style.position = 'relative';
+            yesBtn.style.left = '0';
+            yesBtn.style.top = '0';
+            yesBtn.style.transform = 'scale(1.2)';
+
+            // Rain hearts
             setInterval(() => {
                 const h = document.createElement('div');
                 h.className = 'heart';
