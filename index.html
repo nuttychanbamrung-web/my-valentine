@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doraemon Valentine</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #bbdefb; /* สีฟ้าโดราเอมอน */
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 320px;
+            position: relative; /* จำกัดให้ปุ่มวิ่งอยู่ในนี้ */
+            border: 4px solid #2196f3;
+        }
+
+        h1 {
+            color: #1976d2;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .gif-container {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* รูปสำรองกรณีลิงก์เสีย */
+        .gif-container img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            height: 60px;
+            position: relative; /* ให้ปุ่ม No วิ่งวนในนี้ */
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        #yesBtn {
+            background-color: #ff5252;
+            color: white;
+        }
+
+        #noBtn {
+            background-color: #9e9e9e;
+            color: white;
+            position: absolute; /* วิ่งวนเฉพาะใน .btn-group หรือ .container */
+            right: 40px;
+        }
+
+        .floating {
+            position: absolute;
+            pointer-events: none;
+            animation: moveUp 3s forwards;
+        }
+
+        @keyframes moveUp {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(-200px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="box">
+        <h1 id="text">Will you be my Valentine?</h1>
+        <div class="gif-container">
+            <img id="doraImg" src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Y2Ynh6Z3R4bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/12TqMlxXNAnHuo/giphy.gif" alt="Doraemon">
+        </div>
+        <div class="btn-group" id="area">
+            <button id="yesBtn">YES! ❤️</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const text = document.getElementById('text');
+        const img = document.getElementById('doraImg');
+        const box = document.getElementById('box');
+        
+        let scale = 1;
+
+        // ฟังก์ชันวิ่งหนี (จำกัดเขตแคบลงเพื่อไม่ให้หาย)
+        function escape() {
+            // คำนวณตำแหน่งสุ่มให้อยู่ภายในตัว Container สีขาวเท่านั้น
+            const containerRect = box.getBoundingClientRect();
+            const btnWidth = noBtn.offsetWidth;
+            const btnHeight = noBtn.offsetHeight;
+
+            // สุ่มตำแหน่งใหม่ x, y ภายในกรอบของ box
+            const newX = Math.random() * (containerRect.width - btnWidth);
+            const newY = Math.random() * (containerRect.height - btnHeight);
+
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = newX + 'px';
+            noBtn.style.top = newY + 'px';
+
+            // ปุ่ม YES ใหญ่ขึ้น
+            scale += 0.2;
+            yesBtn.style.transform = `scale(${scale})`;
+        }
+
+        noBtn.addEventListener('mouseover', escape);
+        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); escape(); });
+
+        yesBtn.addEventListener('click', () => {
+            text.innerHTML = "I Love You! ❤️";
+            // เปลี่ยนเป็นรูปโดราเอมอนหัวใจ
+            img.src = "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Y2Ynh6Z3R4bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/3Owa0TWYqHi5R9psF9/giphy.gif";
+            noBtn.style.display = 'none';
+            
+            // สร้างหัวใจลอย
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.className = 'floating';
+                heart.style.left = Math.random() * 100 + '%';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 3000);
+            }, 300);
+        });
+    </script>
+</body>
+</html>
