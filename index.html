@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doraemon Valentine ❤️</title>
+    <title>Valentine Surprise! ❤️</title>
     <style>
         body {
             margin: 0;
@@ -12,9 +12,10 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #bbdefb;
+            background-color: #ffcad4; /* Soft Pink */
             font-family: 'Arial', sans-serif;
             overflow: hidden;
+            text-align: center;
         }
 
         .container {
@@ -23,28 +24,25 @@
             border-radius: 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             width: 85%;
-            max-width: 350px;
+            max-width: 380px;
             position: relative;
-            border: 5px solid #2196f3;
-            text-align: center;
+            border: 5px solid #ff4d6d;
             min-height: 420px;
         }
 
         h1 {
-            color: #1976d2;
+            color: #ff4d6d;
             font-size: 1.5rem;
             margin-bottom: 20px;
         }
 
         .gif-container {
             width: 100%;
-            height: 200px;
+            height: 220px;
             display: flex;
             justify-content: center;
             align-items: center;
             margin-bottom: 20px;
-            background-color: #f8f9fa; /* พื้นหลังสำรองถ้าเน็ตช้า */
-            border-radius: 15px;
         }
 
         .gif-container img {
@@ -72,7 +70,7 @@
         }
 
         #yesBtn {
-            background-color: #ff5252;
+            background-color: #ff4d6d;
             color: white;
             left: 20px;
             top: 20px;
@@ -80,11 +78,10 @@
         }
 
         #noBtn {
-            background-color: #9e9e9e;
+            background-color: #adb5bd;
             color: white;
             right: 20px;
             top: 20px;
-            transition: all 0.2s ease;
         }
 
         .heart {
@@ -102,12 +99,12 @@
 <body>
 
     <div class="container" id="box">
-        <h1 id="header">Will you be my Valentine? 🔔</h1>
+        <h1 id="header">Will you be my Valentine? ❤️</h1>
         <div class="gif-container">
-            <img id="dora" src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Y2Ynh6Z3R4bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/12TqMlxXNAnHuo/giphy.gif" alt="Doraemon">
+            <img id="mainGif" src="https://media.tenor.com/u_5Y7N7Q5-YAAAAM/doraemon-hi.gif" alt="Doraemon">
         </div>
-        <div class="btn-group" id="btnArea">
-            <button id="yesBtn">YES! ❤️</button>
+        <div class="btn-group">
+            <button id="yesBtn">YES! 💖</button>
             <button id="noBtn">No</button>
         </div>
     </div>
@@ -116,38 +113,34 @@
         const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
         const header = document.getElementById('header');
-        const dora = document.getElementById('dora');
+        const gif = document.getElementById('mainGif');
         const box = document.getElementById('box');
         
         let scale = 1;
 
         function moveNo() {
-            // คำนวณขอบเขตภายในกล่องขาว
             const maxX = box.clientWidth - noBtn.offsetWidth - 20;
             const maxY = box.clientHeight - noBtn.offsetHeight - 20;
 
-            // สุ่มตำแหน่งใหม่ให้อยู่แค่ในกล่องขาว
+            // Keeps the button inside the box
             const newX = Math.floor(Math.random() * maxX);
             const newY = Math.floor(Math.random() * (maxY - 100)) + 100;
 
             noBtn.style.left = newX + 'px';
             noBtn.style.top = newY + 'px';
 
-            // ปุ่ม YES ใหญ่ขึ้น
-            scale += 0.3;
+            // Make YES button grow bigger
+            scale += 0.4;
             yesBtn.style.transform = `scale(${scale})`;
         }
 
         noBtn.addEventListener('mouseover', moveNo);
-        noBtn.addEventListener('touchstart', (e) => { 
-            e.preventDefault(); 
-            moveNo(); 
-        });
+        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveNo(); });
 
         yesBtn.addEventListener('click', () => {
-            header.innerHTML = "Yay! Love you! ❤️";
-            // รูปโดราเอมอนทำท่าหัวใจ (Giphy Direct)
-            dora.src = "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3VxdXo0ZnB0bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/3Owa0TWYqHi5R9psF9/giphy.gif";
+            header.innerHTML = "I LOVE YOU! ❤️";
+            // YOUR REQUESTED GIF (Corgi GIF)
+            gif.src = "https://media.tenor.com/mO_WqAbeK9AAAAAM/fuck-dog.gif";
             
             noBtn.style.display = 'none';
             yesBtn.style.position = 'relative';
@@ -155,7 +148,7 @@
             yesBtn.style.top = '0';
             yesBtn.style.transform = 'scale(1.2)';
 
-            // หัวใจลอยฉลอง
+            // Heart rain effect
             setInterval(() => {
                 const h = document.createElement('div');
                 h.className = 'heart';
