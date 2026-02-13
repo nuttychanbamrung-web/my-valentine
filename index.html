@@ -12,50 +12,54 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #ffcad4; /* Soft Pink */
+            background-color: #ffcad4;
             font-family: 'Arial', sans-serif;
             overflow: hidden;
-            text-align: center;
         }
 
         .container {
             background: white;
-            padding: 30px;
-            border-radius: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            width: 85%;
-            max-width: 380px;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 350px;
             position: relative;
-            border: 5px solid #ff4d6d;
-            min-height: 420px;
+            border: 4px solid #ff4d6d;
+            text-align: center;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         h1 {
             color: #ff4d6d;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
+            font-size: 1.4rem;
+            margin: 10px 0;
         }
 
         .gif-container {
             width: 100%;
-            height: 220px;
+            height: 200px;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 20px;
+            background: #fff5f7;
+            border-radius: 10px;
         }
 
-        .gif-container img {
+        img {
             max-width: 100%;
             max-height: 100%;
-            border-radius: 15px;
             display: block;
         }
 
         .btn-group {
-            position: relative;
-            height: 120px;
             width: 100%;
+            height: 120px;
+            position: relative;
+            margin-top: 20px;
         }
 
         button {
@@ -65,23 +69,23 @@
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
-            transition: 0.1s;
             position: absolute;
         }
 
         #yesBtn {
             background-color: #ff4d6d;
             color: white;
-            left: 20px;
+            left: 20%;
             top: 20px;
-            z-index: 100;
+            z-index: 10;
         }
 
         #noBtn {
             background-color: #adb5bd;
             color: white;
-            right: 20px;
+            right: 20%;
             top: 20px;
+            transition: all 0.2s ease;
         }
 
         .heart {
@@ -92,19 +96,19 @@
         }
 
         @keyframes fall {
-            to { transform: translateY(110vh) rotate(360deg); }
+            to { transform: translateY(110vh); }
         }
     </style>
 </head>
 <body>
 
-    <div class="container" id="box">
-        <h1 id="header">Will you be my Valentine? ❤️</h1>
+    <div class="container" id="mainBox">
+        <h1 id="msg">Will you be my Valentine? ❤️</h1>
         <div class="gif-container">
-            <img id="mainGif" src="https://media.tenor.com/u_5Y7N7Q5-YAAAAM/doraemon-hi.gif" alt="Doraemon">
+            <img id="mainGif" src="https://media.giphy.com/media/12TqMlxXNAnHuo/giphy.gif" alt="Cute Gif">
         </div>
         <div class="btn-group">
-            <button id="yesBtn">YES! 💖</button>
+            <button id="yesBtn">YES!</button>
             <button id="noBtn">No</button>
         </div>
     </div>
@@ -112,25 +116,23 @@
     <script>
         const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
-        const header = document.getElementById('header');
         const gif = document.getElementById('mainGif');
-        const box = document.getElementById('box');
-        
+        const box = document.getElementById('mainBox');
         let scale = 1;
 
         function moveNo() {
+            // คำนวณขอบเขตภายใน Container สีขาวเท่านั้น
             const maxX = box.clientWidth - noBtn.offsetWidth - 20;
             const maxY = box.clientHeight - noBtn.offsetHeight - 20;
 
-            // Keeps the button inside the box
             const newX = Math.floor(Math.random() * maxX);
             const newY = Math.floor(Math.random() * (maxY - 100)) + 100;
 
             noBtn.style.left = newX + 'px';
             noBtn.style.top = newY + 'px';
-
-            // Make YES button grow bigger
-            scale += 0.4;
+            
+            // ขยายปุ่ม Yes ให้ใหญ่ขึ้น
+            scale += 0.3;
             yesBtn.style.transform = `scale(${scale})`;
         }
 
@@ -138,25 +140,20 @@
         noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveNo(); });
 
         yesBtn.addEventListener('click', () => {
-            header.innerHTML = "I LOVE YOU! ❤️";
-            // YOUR REQUESTED GIF (Corgi GIF)
+            document.getElementById('msg').innerText = "I LOVE YOU! ❤️";
+            // รูปหมา Corgi ที่คุณต้องการ
             gif.src = "https://media.tenor.com/mO_WqAbeK9AAAAAM/fuck-dog.gif";
-            
             noBtn.style.display = 'none';
-            yesBtn.style.position = 'relative';
-            yesBtn.style.left = '0';
-            yesBtn.style.top = '0';
+            yesBtn.style.position = 'static';
             yesBtn.style.transform = 'scale(1.2)';
-
-            // Heart rain effect
+            
             setInterval(() => {
                 const h = document.createElement('div');
                 h.className = 'heart';
                 h.innerHTML = '❤️';
                 h.style.left = Math.random() * 100 + 'vw';
-                h.style.animationDuration = (Math.random() * 2 + 2) + 's';
                 document.body.appendChild(h);
-                setTimeout(() => h.remove(), 4000);
+                setTimeout(() => h.remove(), 3000);
             }, 200);
         });
     </script>
