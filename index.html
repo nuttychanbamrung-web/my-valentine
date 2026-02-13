@@ -12,7 +12,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #bbdefb; /* Doraemon Blue */
+            background-color: #bbdefb;
             font-family: 'Arial', sans-serif;
             overflow: hidden;
             text-align: center;
@@ -20,25 +20,26 @@
 
         .container {
             background: white;
-            padding: 40px;
+            padding: 30px;
             border-radius: 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             width: 85%;
-            max-width: 400px;
-            position: relative;
+            max-width: 350px;
+            position: relative; /* สำคัญมาก: ให้ปุ่ม No วิ่งแค่ในนี้ */
             border: 5px solid #2196f3;
+            min-height: 400px;
         }
 
         h1 {
             color: #1976d2;
-            margin-bottom: 20px;
-            font-size: 1.8rem;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
         }
 
         .gif-container {
             width: 100%;
-            height: 200px;
-            margin-bottom: 30px;
+            height: 180px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -51,44 +52,41 @@
         }
 
         .btn-group {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            min-height: 100px;
+            height: 50px;
             position: relative;
+            margin-top: 20px;
         }
 
         button {
-            padding: 15px 30px;
-            font-size: 1.2rem;
+            padding: 12px 25px;
+            font-size: 1rem;
             border: none;
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
-            transition: 0.2s;
+            transition: 0.1s;
         }
 
         #yesBtn {
             background-color: #ff5252;
             color: white;
-            z-index: 10;
+            position: relative;
+            z-index: 2;
         }
 
         #noBtn {
             background-color: #9e9e9e;
             color: white;
-            position: absolute; /* เปลี่ยนเป็น absolute เพื่อให้วิ่งแค่ในกรอบสีขาว */
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: absolute; /* เปลี่ยนเป็น absolute เพื่อให้จำกัดวงวิ่ง */
+            z-index: 1;
+            transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* หัวใจลอย */
         .heart {
             position: fixed;
             top: -10vh;
             font-size: 2rem;
             animation: fall 3s linear forwards;
-            z-index: 1;
         }
 
         @keyframes fall {
@@ -98,14 +96,14 @@
 </head>
 <body>
 
-    <div class="container" id="mainBox">
+    <div class="container" id="box">
         <h1 id="header">Be my Valentine? 🔔</h1>
         <div class="gif-container">
-            <img id="doraemon" src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Y2Ynh6Z3R4bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/12TqMlxXNAnHuo/giphy.gif" alt="Doraemon">
+            <img id="dora" src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Y2Ynh6Z3R4bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/12TqMlxXNAnHuo/giphy.gif" alt="Doraemon">
         </div>
-        <div class="btn-group" id="btnArea">
+        <div class="btn-group">
             <button id="yesBtn">YES! ❤️</button>
-            <button id="noBtn" style="left: 190px;">No</button>
+            <button id="noBtn" style="left: 180px;">No</button>
         </div>
     </div>
 
@@ -113,40 +111,38 @@
         const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
         const header = document.getElementById('header');
-        const dora = document.getElementById('doraemon');
-        const mainBox = document.getElementById('mainBox');
+        const dora = document.getElementById('dora');
+        const box = document.getElementById('box');
         
         let scale = 1;
 
-        // ฟังก์ชันวิ่งหนี (ล็อคให้อยู่แค่ในกล่องสีขาว)
-        function escape() {
-            const boxWidth = mainBox.offsetWidth;
-            const boxHeight = mainBox.offsetHeight;
-            const btnWidth = noBtn.offsetWidth;
-            const btnHeight = noBtn.offsetHeight;
+        function moveNo() {
+            // คำนวณตำแหน่งสุ่มให้อยู่ "ภายในกรอบขาว" (box) เท่านั้น
+            const padding = 20;
+            const maxX = box.clientWidth - noBtn.offsetWidth - padding;
+            const maxY = box.clientHeight - noBtn.offsetHeight - padding;
 
-            // สุ่มตำแหน่งใหม่ภายใน padding ของ mainBox
-            const newX = Math.random() * (boxWidth - btnWidth - 40);
-            const newY = Math.random() * (boxHeight - btnHeight - 40);
+            const newX = Math.floor(Math.random() * maxX);
+            const newY = Math.floor(Math.random() * maxY);
 
             noBtn.style.left = newX + 'px';
             noBtn.style.top = newY + 'px';
 
-            // ปุ่ม Yes ใหญ่ขึ้น
+            // ขยายปุ่ม Yes
             scale += 0.2;
             yesBtn.style.transform = `scale(${scale})`;
         }
 
-        noBtn.addEventListener('mouseover', escape);
-        noBtn.addEventListener('click', escape); // สำหรับมือถือที่ไม่มี mouseover
+        noBtn.addEventListener('mouseover', moveNo);
+        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveNo(); });
 
         yesBtn.addEventListener('click', () => {
             header.innerHTML = "I Love You! ❤️";
-            dora.src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3VxdXo0ZnB0bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/3Owa0TWYqHi5R9psF9/giphy.gif";
+            // รูปโดราเอมอนส่งหัวใจ
+            dora.src = "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3VxdXo0ZnB0bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/3Owa0TWYqHi5R9psF9/giphy.gif";
             noBtn.style.display = 'none';
-            yesBtn.style.transform = 'scale(1.2)';
+            yesBtn.style.transform = 'scale(1)';
             
-            // ปล่อยหัวใจ
             setInterval(() => {
                 const h = document.createElement('div');
                 h.className = 'heart';
